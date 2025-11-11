@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "codigoUnidade": {
+      "type": "string"
+    },
+    "anoPca": {
+      "type": "integer",
+      "minLength": 4,
+      "maxLength": 4
+    },
+    "itensPlano": {
+      "type": "array",
+      "items": [
+        {
+          "type": "array",
+          "properties": {
+            "numeroItem": {
+              "type": "integer"
+            },
+            "categoriaItemPca": {
+              "type": "integer",
+              "enum": [1,2,3,4,5,6,7,8]
+            },
+            "catalogo": {
+              "type": "integer",
+              "enum": [1,2]
+            },
+            "classificacaoCatalogo": {
+              "type": "string",
+              "enum": ["M","S"]
+            },
+            "classificacaoSuperiorCodigo": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "classificacaoSuperiorNome": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "pdmCodigo": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "pdmDescricao": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "codigoItem": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "descricao": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "unidadeFornecimento": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "quantidade": {
+              "type": "number"
+            },
+            "valorUnitario": {
+              "type": "number"
+            },
+            "valorTotal": {
+              "type": "number"
+            },
+            "valorOrcamentoExercicio": {
+              "type": "number"
+            },
+            "dataDesejada": {
+              "type": "string"
+            },
+            "unidadeRequisitante": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "grupoContratacaoCodigo": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "grupoContratacaoNome": {
+              "type": "string",
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "numeroItem",
+            "categoriaItemPca",
+            "catalogo",
+            "classificacaoCatalogo",
+            "classificacaoSuperiorCodigo",
+            "classificacaoSuperiorNome",
+            "quantidade",
+            "valorUnitario",
+            "valorTotal",            
+            "valorOrcamentoExercicio",
+            "dataDesejada"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "codigoUnidade",
+    "anoPca",
+    "itensPlano"
+  ]
+}
