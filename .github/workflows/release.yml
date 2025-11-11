@@ -5,7 +5,11 @@ on:
     branches:
       - main
       - master
-
+  
+permissions:
+  contents: write
+  packages: write
+  
 jobs:
   release:
     name: Gerar release semântico
@@ -24,7 +28,8 @@ jobs:
 
       - name: Instala pacotes necessários
         run: |
-          npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog @semantic-release/exec
+          npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog @semantic-release/exec conventional-changelog-conventionalcommits
+
 
       - name: Executa release automático
         env:
