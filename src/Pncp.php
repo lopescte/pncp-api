@@ -5,7 +5,6 @@ namespace Lopescte\PncpApi;
  * Class Pncp
  *
  * @category   library
- * @version    1.0.0
  * @package    lopescte\PncpApi
  * @url        https://github.com/lopescte/PncpApi
  * @author     Marcelo Lopes <lopes.cte@gmail.com>
@@ -20,7 +19,7 @@ class Pncp
     private static $ambiente = null;    // 1 = Treinamento/Homologação, 2 = Produção
     private static $version = 'v1';     // versão da API
     private static $base_url = null;    // URL base do PNCP
-    private static $manual = 'v2.3.5';  // Versão do Manual de Integração compatibilizada
+    private static $manual = 'v2.3.8';  // Versão do Manual de Integração compatibilizada
 
 
     /**
@@ -68,10 +67,15 @@ class Pncp
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     }
     
@@ -118,8 +122,12 @@ class Pncp
     public static function getVersion(): ?string
     {
         return self::$version;
-    }
+    }   
     
+    /**
+     * method validaControlePncp()
+     *
+     */
     public static function validaControlePncp($data)
     {
         if(empty($data))
@@ -138,5 +146,19 @@ class Pncp
         }else{
             throw new \Exception("O ID de controle do PNCP informado ({$data}) não é um formato válido.<br/> (Ex.: 99999999999999-9-999999/9999).");
         } 
+    }
+    
+    /**
+     * method getHeaderValue()
+     *
+     */
+    public static function getHeaderValue(array $headers, string $name): ?string 
+    {
+        foreach ($headers as $key => $value) {
+            if (strcasecmp($key, $name) === 0) {
+                return is_array($value) ? implode(';', $value) : $value;
+            }
+        }
+        return null;
     }
 }
