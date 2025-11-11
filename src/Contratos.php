@@ -1,15 +1,15 @@
 <?php
 namespace Lopescte\PncpApi;
 
+use Transliterator;
 /**
  * Class Contratos
  *
  * @category   library
- * @version    1.0.0
  * @package    lopescte\PncpApi
  * @url        https://github.com/lopescte/PncpApi
  * @author     Marcelo Lopes <lopes.cte@gmail.com>
- * @copyright  Copyright (c) 2023 Reis & Lopes Assessoria e Sistemas. (https://www.reiselopes.com.br)
+ * @copyright  Copyright (c) 2022 Reis & Lopes Assessoria e Sistemas. (https://www.reiselopes.com.br)
  * @license    http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license    https://opensource.org/licenses/MIT MIT
  * @license    http://www.gnu.org/licenses/gpl.txt GPLv3+
@@ -43,10 +43,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     } 
     
@@ -79,10 +84,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     } 
     
@@ -146,10 +156,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     }
     
@@ -192,7 +207,7 @@ class Contratos
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Titulo-Documento' => mb_convert_encoding($nome_documento, 'ISO-8859-1'),
+                                                'Titulo-Documento' => transliterator_transliterate('Any-Latin; Latin-ASCII', $nome_documento),
                                                 'Tipo-Documento-Id' => $tipo_documento,
                                                 'Authorization' => Pncp::getAccessToken()
                                             ],
@@ -211,10 +226,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }   
     }
     
@@ -243,10 +263,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     } 
     
@@ -340,10 +365,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     }
     
@@ -384,7 +414,7 @@ class Contratos
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Titulo-Documento' => mb_convert_encoding($nome_documento, 'ISO-8859-1'),
+                                                'Titulo-Documento' => transliterator_transliterate('Any-Latin; Latin-ASCII', $nome_documento),
                                                 'Tipo-Documento-Id' => $tipo_documento,
                                                 'Authorization' => Pncp::getAccessToken()
                                             ],
@@ -403,10 +433,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }  
     }
     
@@ -472,10 +507,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     }
         
@@ -520,10 +560,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }           
     } 
     
@@ -565,10 +610,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     }       
     
@@ -610,10 +660,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         } 
     } 
     
@@ -655,10 +710,15 @@ class Contratos
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         } 
     }            
     

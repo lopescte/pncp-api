@@ -1,11 +1,12 @@
 <?php
 namespace Lopescte\PncpApi;
 
+use Transliterator;
+
 /**
  * Class Atas
  *
  * @category   library
- * @version    1.0.0
  * @package    lopescte\PncpApi
  * @url        https://github.com/lopescte/PncpApi
  * @author     Marcelo Lopes <lopes.cte@gmail.com>
@@ -54,10 +55,15 @@ class Atas
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     } 
     
@@ -86,23 +92,28 @@ class Atas
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     } 
     
     /**
      * @method insereAta()
      * @string controle      // ID de controle da compra no PNCP
-     * $array parameters     // {
+     * $array parameters     // [
      *                            "numeroAtaRegistroPreco": "1/2021",
      *                            "anoAta": 2021,
      *                            "dataAssinatura": "2021-07-21",
      *                            "dataVigenciaInicio": "2021-07-21",
      *                            "dataVigenciaFim": "2022-07-21"
-     *                           }
+     *                          ]
      */
     public function insereAta(string $controle=NULL, array $parameters=NULL)
     {
@@ -161,10 +172,15 @@ class Atas
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }
     } 
     
@@ -212,7 +228,7 @@ class Atas
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Titulo-Documento' => mb_convert_encoding($nome_documento, 'ISO-8859-1'),
+                                                'Titulo-Documento' => transliterator_transliterate('Any-Latin; Latin-ASCII', $nome_documento),
                                                 'Tipo-Documento' => $tipo_documento,
                                                 'Authorization' => Pncp::getAccessToken()
                                             ],
@@ -231,10 +247,15 @@ class Atas
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         }  
     }   
         
@@ -276,10 +297,93 @@ class Atas
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
-    		$error = json_decode($e->getResponse()->getBody(), TRUE);
-                	throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-    	    }
-    	    throw new \Exception($e->getMessage());
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        } 
+    }
+    
+    /**
+     * @method alteraAtaPorUrl()
+     * @string url           // URL da ata no PNCP
+     * @array  parameters    // [
+     *                            "numeroAtaRegistroPreco" => "1/2021", 
+     *                            "anoAta" => 2021, 
+     *                            "dataAssinatura" => "2021-07-01", 
+     *                            "dataInicioVigencia" => "2021-07-01", 
+     *                            "dataFimVigencia" => "2021-07-01", 
+     *                            "cancelado" => true,                         // apenas se para Cancelamento da ATA
+     *                            "dataCancelamento" => "2023-01-01T12:00:00", // apenas se cancelado = true
+     *                            "justificativa" => "motivo/justificativa para a retificação dos atributos da ATA"
+     *                          ] 
+     */
+    public function alteraAtaPorUrl(string $url=NULL, array $parameters=NULL)
+    {
+        try
+        {
+            if (empty(Pncp::getAccessToken())) {
+                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
+            }
+            
+            if(empty($url)){
+                throw new \Exception('URL da ATA não pode ser vazio.');
+            }
+            
+            $data = new \StdClass;     
+            $schema = json_decode(file_get_contents(__DIR__.'/schemas/atas/alteraAta.json'));
+            
+            if(!empty($parameters) && is_array($parameters))
+            {
+                foreach($parameters as $key => $value)
+                {
+                    $data->$key = $value;
+                }
+            }else{
+                throw new \Exception('Um array() de dados deve ser enviado. Consulte o schema.');
+            } 
+            
+            // Validate
+            $validator = new \JsonSchema\Validator();
+            $validator->validate($data, $schema);
+                                               
+            if (!$validator->isValid()) {                
+                $msg = NULL;
+                foreach ($validator->getErrors() as $error) {
+                    $msg .= $error['property']. ' - ' . $error['message']."<br>";
+                }
+                throw new \Exception($msg);
+            }
+            
+            $client = new \GuzzleHttp\Client();            
+            $result = $client->request('PUT', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json',
+                                                'Authorization' => Pncp::getAccessToken()
+                                            ],
+                                            'json' => $parameters
+                                        ]);
+                                        
+            $this->response['location'] = $result->getHeaders();
+            return ['response' => $this->response];                         
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
         } 
     }       
     

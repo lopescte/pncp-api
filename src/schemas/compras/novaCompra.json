@@ -11,7 +11,7 @@
     },
     "modalidadeId": {
       "type": "integer",
-      "enum": [1,2,3,4,5,6,7,8,9,10,11,12,13]
+      "enum": [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
     },
     "modoDisputaId": {
       "type": "integer",
@@ -59,6 +59,13 @@
     "justificativaPresencial": {
       "type": "string",
       "maxLength": 5120
+    },
+    "fontesOrcamentarias": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "enum": [1,2,3,4,5]
+      }
     },
     "itensCompra": {
       "type": "array",
@@ -138,6 +145,29 @@
             "ncmNbsDescricao": {
               "type": "string",
               "maxLength": 2048
+            },
+            "catalogoId": {
+              "type": "integer",
+              "enum": [1,2]
+            },
+            "categoriaItemCatalogoId": {
+              "type": "integer",
+              "enum": [1,2,3,4,5,6,7,8]
+            },
+            "catalogoCodigoItem": {
+              "type": "string",
+              "maxLength": 20
+            },
+            "informacaoComplementar": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "codigoTipoMargemPreferencia": {
+              "type": "integer",
+              "enum": [1,2]
+            },
+            "inConteudoNacional": {
+              "type": "boolean"
             }
           },
           "required": [

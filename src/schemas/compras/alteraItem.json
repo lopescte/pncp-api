@@ -72,8 +72,33 @@
       "type": "string",
       "maxLength": 2048
     },
+    "catalogoId": {
+      "type": "integer",
+      "enum": [1,2]
+    },
+    "categoriaItemCatalogoId": {
+      "type": "integer",
+      "enum": [1,2,3,4,5,6,7,8]
+    },
+    "catalogoCodigoItem": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "informacaoComplementar": {
+      "type": "string",
+      "maxLength": 4096
+    },
+    "codigoTipoMargemPreferencia": {
+      "type": "integer",
+      "enum": [1,2]
+    },
+    "inConteudoNacional": {
+      "type": "boolean"
+    },
     "justificativa": {
-      "type": "string"
+      "type": "string",
+      "minLength": 15,
+      "maxLength": 255
     }
   },
   "required": [

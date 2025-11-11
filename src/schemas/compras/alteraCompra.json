@@ -66,6 +66,7 @@
     },
     "justificativa": {
       "type": "string",
+      "minLength": 15,
       "maxLength": 255 
     }
   },

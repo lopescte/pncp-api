@@ -1,0 +1,32 @@
+name: Release Automático
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  release:
+    name: Gerar release semântico
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configura Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instala pacotes necessários
+        run: |
+          npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog @semantic-release/exec
+
+      - name: Executa release automático
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

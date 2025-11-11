@@ -8,11 +8,10 @@ use Exception;
  * Class Dominios
  *
  * @category   library
- * @version    1.0.0
  * @package    lopescte\PncpApi
  * @url        https://github.com/lopescte/PncpApi
  * @author     Marcelo Lopes <lopes.cte@gmail.com>
- * @copyright  Copyright (c) 2024 Reis & Lopes Assessoria e Sistemas. (https://www.reiselopes.com.br)
+ * @copyright  Copyright (c) 2022 Reis & Lopes Assessoria e Sistemas. (https://www.reiselopes.com.br)
  * @license    http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license    https://opensource.org/licenses/MIT MIT
  * @license    http://www.gnu.org/licenses/gpl.txt GPLv3+
