@@ -29,7 +29,7 @@ class Contratos
             if(empty($url)){
                 throw new \Exception('URL não pode ser vazio.');
             }
-                        
+                                
             $client = new \GuzzleHttp\Client();            
             $result = $client->request('GET', $url, [
                                             'headers' => [
@@ -138,7 +138,7 @@ class Contratos
                 throw new \Exception($msg);
             }
             
-            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj) . '/contratos/';
+            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj) . '/contratos';
              
             $client = new \GuzzleHttp\Client();            
             $result = $client->request('POST', $url, [
