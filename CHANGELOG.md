@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/lopescte/pncp-api/compare/v1.1.0...v1.1.1) (2026-01-09)
+
+
+### Bug Fixes
+
+* Corrige URL de envio de contratos removendo a barra ao final. ([c6b319e](https://github.com/lopescte/pncp-api/commit/c6b319e7bc90837a762cd64e5ab2db6e08c58e51))
+
 # [1.1.0](https://github.com/lopescte/pncp-api/compare/v1.0.0...v1.1.0) (2025-11-11)
 
 
