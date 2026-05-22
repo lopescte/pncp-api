@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/lopescte/pncp-api/compare/v1.1.1...v2.0.0) (2026-05-22)
+
+
+* feat:! Envio de arquivos na inclusão de contratos e atas ([34ed178](https://github.com/lopescte/pncp-api/commit/34ed17836f26e77751e2ac53a021f9e67a046dbe))
+
+
+### Performance Improvements
+
+* Alteradas opções de timeout de conexão ([84afa48](https://github.com/lopescte/pncp-api/commit/84afa48edd732d3e0d3037a61d5763bab5fe181c))
+
+
+### BREAKING CHANGES
+
+* Inclusão de Contratos e Atas passam exigir o envio de arquivos.
+
 ## [1.1.1](https://github.com/lopescte/pncp-api/compare/v1.1.0...v1.1.1) (2026-01-09)
 
 
