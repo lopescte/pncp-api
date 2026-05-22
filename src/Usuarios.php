@@ -35,7 +35,7 @@ class Usuarios
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/' . $id;
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -79,7 +79,7 @@ class Usuarios
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/?cpfCnpj=' . $cpfCnpj;
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -157,7 +157,7 @@ class Usuarios
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/' . $id;
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('PUT', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -208,7 +208,7 @@ class Usuarios
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/' . $id .'/orgaos';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -260,7 +260,7 @@ class Usuarios
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/' . $id .'/orgaos';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',

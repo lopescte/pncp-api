@@ -34,7 +34,7 @@ class Planos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -103,7 +103,7 @@ class Planos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj) . '/pca/';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -177,7 +177,7 @@ class Planos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('PUT', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -232,7 +232,7 @@ class Planos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',

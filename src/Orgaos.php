@@ -25,22 +25,17 @@ class Orgaos
     {
         try
         {
-            if (empty(Pncp::getAccessToken())) {
-                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
-            } 
-            
             if(empty($cnpj)){
                 throw new \Exception('CNPJ do órgão não pode ser vazio.');
             }
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj);
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
-                                                'Authorization' => Pncp::getAccessToken()
+                                                'Content-Type' => 'application/json'
                                             ]
                                         ]);
             
@@ -105,7 +100,7 @@ class Orgaos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -141,22 +136,17 @@ class Orgaos
     {
         try
         {
-            if (empty(Pncp::getAccessToken())) {
-                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
-            } 
-            
             if(empty($cnpj)){
                 throw new \Exception('CNPJ do órgão não pode ser vazio.');
             }
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj) . '/unidades';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
-                                                'Authorization' => Pncp::getAccessToken()
+                                                'Content-Type' => 'application/json'
                                             ]
                                         ]);
             
@@ -225,7 +215,7 @@ class Orgaos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj) . '/unidades';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
