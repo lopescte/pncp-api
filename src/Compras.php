@@ -32,7 +32,7 @@ class Compras
             
             $url = preg_replace("/api\/pncp/", "api/consulta", $url);
             
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -72,7 +72,7 @@ class Compras
             
             $url = preg_replace("/pncp-api/", "api/consulta", $url);
             
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -124,7 +124,7 @@ class Compras
             $id_item = (isset($item)) ? '/'.$item : '';
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] .'/itens' . $id_item;
 
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -162,20 +162,15 @@ class Compras
                 throw new \Exception('ID de controle da compra não pode ser vazio.');
             }
             
-            if (empty(Pncp::getAccessToken())) {
-                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
-            } 
-            
             $id = Pncp::validaControlePncp($controle);
                         
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] .'/arquivos';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
-                                                'Authorization' => Pncp::getAccessToken()
+                                                'Content-Type' => 'application/json'
                                             ]
                                         ]);
             
@@ -214,7 +209,7 @@ class Compras
                 throw new \Exception('URI do documento não pertence ao PNCP.');
             }
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $uri, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -318,10 +313,12 @@ class Compras
                 throw new \Exception('CNPJ do órgão não pode ser vazio.');
             }
             
-            if(empty($documento) || !file_exists(urldecode($documento))){
+            if(empty($documento)){
                 throw new \Exception('Documento não pode ser vazio.');
             }
-                    
+            
+            $tmpdoc = Pncp::getFile($documento);
+                   
             $data = new \StdClass;
             $schema = json_decode(file_get_contents(__DIR__.'/schemas/compras/novaCompra.json'));
             
@@ -352,7 +349,7 @@ class Compras
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/'. preg_replace("/\D/", "", $cnpj) . '/compras';
                          
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -368,8 +365,8 @@ class Compras
                                                 ],
                                                 [
                                                     'name' => 'documento',
-                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($documento), 'r'),
-                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($documento))]
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpdoc), 'r'),
+                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($tmpdoc))]
                                                 ]
                                             ]
                                         ]);
@@ -445,7 +442,7 @@ class Compras
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/'. preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] . '/itens';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -514,7 +511,7 @@ class Compras
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('PUT', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -598,7 +595,7 @@ class Compras
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/'. preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] . '/itens/' . $item;
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('PATCH', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -683,7 +680,7 @@ class Compras
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/'. preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] . '/itens/' . $item;
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('PATCH', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -728,7 +725,7 @@ class Compras
             
             $id = Pncp::validaControlePncp($controle);            
                         
-            if(empty(urldecode($arquivo)) || !file_exists(urldecode($arquivo))){
+            if(empty($arquivo)){
                 throw new \Exception('Arquivo não localizado ou não informado.');
             }
             
@@ -739,10 +736,12 @@ class Compras
             if(empty($tipo_documento)){
                 throw new \Exception('ID do tipo do Documento não pode ser vazio.');
             }            
-                                                            
+            
+            $tmpdoc = Pncp::getFile($arquivo);
+                                                           
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] . '/arquivos';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -753,8 +752,8 @@ class Compras
                                             'multipart' => [
                                                 [
                                                     'name' => 'arquivo',
-                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($arquivo), 'r'),
-                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($arquivo))]
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpdoc), 'r'),
+                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($tmpdoc))]
                                                 ]
                                             ]
                                         ]);
@@ -836,7 +835,7 @@ class Compras
                 
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/'. preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] . '/itens/' . $item . '/resultados';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -926,7 +925,7 @@ class Compras
                
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/'. preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'] . '/itens/' . $item . '/resultados/' . $resultado;
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('PUT', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -977,7 +976,7 @@ class Compras
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/compras/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -1027,7 +1026,7 @@ class Compras
             
             $parameters = ['justificativa' => $justificativa];
                          
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
