@@ -16,10 +16,11 @@ namespace Lopescte\PncpApi;
 class Pncp
 {
     private static $accessToken = null;
-    private static $ambiente = null;    // 1 = Treinamento/Homologação, 2 = Produção
-    private static $version = 'v1';     // versão da API
-    private static $base_url = null;    // URL base do PNCP
-    private static $manual = 'v2.3.8';  // Versão do Manual de Integração compatibilizada
+    private static $ambiente = null;                               // 1 = Treinamento/Homologação, 2 = Produção
+    private static $version = 'v1';                                // versão da API
+    private static $base_url = null;                               // URL base do PNCP
+    private static $default_url = 'https://pncp.gov.br/api/pncp';  // URL base Padrão para as consultas sem autenticação
+    private static $manual = 'v2.4';                               // Versão do Manual de Integração compatibilizada
 
 
     /**
@@ -47,7 +48,7 @@ class Pncp
                 self::setAccessToken($_SESSION['pncp']['token']);
             }else{
             
-                $client = new \GuzzleHttp\Client();            
+                $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
                 $res = $client->request('POST', self::$base_url . '/' . self::$version . '/usuarios/login', [
                                                 'headers' => [
                                                     'Accept' => '*/*',
@@ -112,7 +113,7 @@ class Pncp
      */
     public static function getBaseUrl(): ?string
     {
-        return self::$base_url;
+        return self::$base_url ?? self::$default_url;
     }
         
     /**
@@ -160,5 +161,53 @@ class Pncp
             }
         }
         return null;
+    }
+    
+    public static function getFile(string $url): ?string
+    {
+        $file = urldecode($url);
+
+        $is_url = filter_var($file, FILTER_VALIDATE_URL);
+        
+        if ($is_url)
+        {
+            $client = new \GuzzleHttp\Client([
+                'timeout' => 15,
+                'verify'  => true,
+                'allow_redirects' => true,
+            ]);
+        
+            try
+            {
+                $path = parse_url($file, PHP_URL_PATH);
+
+                $filename = basename($path);
+                
+                $tmpDir = sys_get_temp_dir();
+                
+                $tmpFile = $tmpDir . DIRECTORY_SEPARATOR . $filename;
+                $response = $client->request('GET', $file, [
+                                'sink' => $tmpFile
+                            ]);
+        
+                if ($response->getStatusCode() !== 200)
+                {
+                    throw new \Exception('Documento remoto não encontrado.');
+                }
+                return $tmpFile;
+            }
+            catch (\RequestException $e)
+            {
+                throw new \Exception('Documento remoto não encontrado.');
+            }
+        }
+        else
+        {
+            if (!file_exists($url))
+            {
+                throw new \Exception('Arquivo local não encontrado.');
+            }
+            return $url;
+        }
     }
 }

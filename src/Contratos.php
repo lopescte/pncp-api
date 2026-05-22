@@ -30,7 +30,7 @@ class Contratos
                 throw new \Exception('URL não pode ser vazio.');
             }
                                 
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -71,7 +71,7 @@ class Contratos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -101,7 +101,7 @@ class Contratos
      * @string cnpj       // CNPJ do Orgao
      * @array parameters  // array()
      */
-    public function insereContrato(string $cnpj=NULL, array $parameters=NULL)
+    public function insereContrato(string $cnpj=NULL, array $parameters=NULL, string $documento=NULL, string $nome_documento=NULL, int $tipo_documento=12)
     {             
         try
         {
@@ -112,6 +112,12 @@ class Contratos
             if(empty($cnpj)){
                 throw new \Exception('CNPJ do órgão não pode ser vazio.');
             }
+            
+            if(empty($documento)){
+                throw new \Exception('Documento não pode ser vazio.');
+            }
+            
+            $tmpdoc = Pncp::getFile($documento);
                         
             $data = new \StdClass;
             $schema = json_decode(file_get_contents(__DIR__.'/schemas/contratos/novoContrato.json'));
@@ -138,18 +144,34 @@ class Contratos
                 throw new \Exception($msg);
             }
             
+            $tmpfile = tempnam(sys_get_temp_dir(), uniqid().'.json');
+            file_put_contents($tmpfile, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+            
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $cnpj) . '/contratos';
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
+                                                'Titulo-Documento' => transliterator_transliterate('Any-Latin; Latin-ASCII', $nome_documento),
+                                                'Tipo-Documento-Id' => $tipo_documento,
                                                 'Authorization' => Pncp::getAccessToken()
                                             ],
-                                            'json' => $parameters
+                                            'multipart' => [
+                                                [
+                                                    'name' => 'contrato',
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpfile), 'r'),
+                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($tmpfile))]
+                                                ],
+                                                [
+                                                    'name' => 'documento',
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpdoc), 'r'),
+                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($tmpdoc))]
+                                                ]
+                                            ]
                                         ]);
             
+            $this->response = json_decode($result->getBody(), true);
             $this->response['location'] = $result->getHeader('location')[0];
             return ['response' => $this->response];           
             
@@ -187,7 +209,7 @@ class Contratos
                 throw new \Exception('Número de Controle do PNCP não pode ser vazio.');
             }            
                         
-            if(empty(urldecode($arquivo)) || !file_exists(urldecode($arquivo))){
+            if(empty($arquivo)){
                 throw new \Exception('Arquivo não localizado ou não informado.');
             }
             
@@ -198,12 +220,14 @@ class Contratos
             if(empty($tipo_documento)){
                 throw new \Exception('ID do tipo do Documento não pode ser vazio.');
             }            
-                                                
+            
+            $tmpdoc = Pncp::getFile($arquivo);
+                                             
             $id = Pncp::validaControlePncp($controle);
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'] . '/arquivos';
                          
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -214,8 +238,8 @@ class Contratos
                                             'multipart' => [
                                                 [
                                                     'name' => 'arquivo',
-                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($arquivo), 'r'),
-                                                    'type' => mime_content_type(urldecode($arquivo))
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpdoc), 'r'),
+                                                    'type' => mime_content_type(urldecode($tmpdoc))
                                                 ]
                                             ]
                                         ]);
@@ -250,7 +274,7 @@ class Contratos
                 throw new \Exception('URL não pode ser vazio.');
             }
                         
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -349,7 +373,7 @@ class Contratos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'] . '/termos';
 
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -396,7 +420,7 @@ class Contratos
                 throw new \Exception('URL do Termo de Contrato não pode ser vazio.');
             }
             
-            if(empty(urldecode($arquivo)) || !file_exists(urldecode($arquivo))){
+            if(empty($arquivo)){
                 throw new \Exception('Arquivo não localizado ou não informado.');
             }
             
@@ -407,10 +431,12 @@ class Contratos
             if(empty($tipo_documento)){
                 throw new \Exception('ID do tipo do Documento não pode ser vazio.');
             }            
-             
+            
+            $tmpdoc = Pncp::getFile($documento);
+            
             $url = $url . '/arquivos';
               
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -421,8 +447,8 @@ class Contratos
                                             'multipart' => [
                                                 [
                                                     'name' => 'arquivo',
-                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($arquivo), 'r'),
-                                                    'type' => mime_content_type(urldecode($arquivo))
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpdoc), 'r'),
+                                                    'type' => mime_content_type(urldecode($tmpdoc))
                                                 ]
                                             ]
                                         ]);
@@ -491,7 +517,7 @@ class Contratos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('PUT', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -546,7 +572,7 @@ class Contratos
             
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $id['cnpj']) . '/contratos/' . $id['ano'] . '/' . $id['numero'];
              
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -595,7 +621,7 @@ class Contratos
             
             $parameters = ['justificativa' => $justificativa];
             
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -645,7 +671,7 @@ class Contratos
                                     
             $parameters = ['justificativa' => $justificativa];
             
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
@@ -695,7 +721,7 @@ class Contratos
             
             $parameters = ['justificativa' => $justificativa];
             
-            $client = new \GuzzleHttp\Client();            
+            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('DELETE', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',

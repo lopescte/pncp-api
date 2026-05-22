@@ -1,44 +1,48 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-    "properties": {
-        "numeroAtaRegistroPreco": {
-            "type": "string",
-            "minLength":1,
-            "maxLength":50
-        },
-        "anoAta": {
-            "type": "integer"
-        },
-        "dataAssinatura": {
-            "type": "string"
-        },
-        "dataVigenciaInicio": {
-            "type": "string"
-        },
-        "dataVigenciaFim": {
-            "type": "string"
-        },
-        "cancelado": {
-            "type": "boolean"
-        },
-        "dataCancelamento": {
-            "type": "string"
-        },
-        "justificativa": {
-            "type": "string"
-        }     
+  "properties": {
+    "numeroAtaRegistroPreco": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
     },
-    "required": [
-        "numeroAtaRegistroPreco",
-        "anoAta",
-        "dataAssinatura",
-        "dataVigenciaInicio",
-        "dataVigenciaFim",
-        "justificativa"
-    ],
-    "dependentRequired": {
-      "cancelado": ["dataCancelamento"],
-      "dataCancelamento": ["cancelado"]
+    "anoAta": {
+      "type": "integer"
+    },
+    "dataAssinatura": {
+      "type": "string"
+    },
+    "dataVigenciaInicio": {
+      "type": "string"
+    },
+    "dataVigenciaFim": {
+      "type": "string"
+    },
+    "possibilidadeAdesao": {
+      "type": "boolean"
+    },
+    "cancelado": {
+      "type": "boolean"
+    },
+    "dataCancelamento": {
+      "type": "string"
+    },
+    "justificativa": {
+      "type": "string"
     }
+  },
+  "required": [
+    "numeroAtaRegistroPreco",
+    "anoAta",
+    "dataAssinatura",
+    "dataVigenciaInicio",
+    "dataVigenciaFim",
+    "possibilidadeAdesao",
+    "justificativa"
+  ],
+  "dependencies": {
+    "cancelado": ["dataCancelamento"],
+    "dataCancelamento": ["cancelado"]
+  }
 }

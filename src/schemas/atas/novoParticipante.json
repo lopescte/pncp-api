@@ -1,0 +1,24 @@
+{
+    "type": "object",
+    "properties": {
+        "tipoParteEnvolvidaId": {
+                "type": "integer",
+                "enum": [1,2,3]
+            },
+        "cnpj": {
+            "type": "string",
+            "minLength":14,
+            "maxLength":14
+        },
+        "codigoUnidadeCompradora": {
+            "type": "string",
+            "minLength":1,
+            "maxLength":30
+        }    
+    },
+    "required": [
+        "tipoParteEnvolvidaId", 
+        "cnpj",
+        "codigoUnidadeCompradora"
+    ]
+}

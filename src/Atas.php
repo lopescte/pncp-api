@@ -102,20 +102,261 @@ class Atas
         		}
             }
         }
+    }
+    
+    /**
+     * @method consultaAtaPorControle()
+     * @string controle       // Controle da Ata no PNCP
+     */
+    public function consultaAtaPorControle(string $controleata=NULL)
+    {             
+        try
+        {
+            if(empty($controleata)){
+                throw new \Exception('Número de Controle da Ata não pode ser vazio.');
+            }
+             
+            $ata = preg_split('/\W+/', $controleata, -1, PREG_SPLIT_NO_EMPTY);
+            
+            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $ata[0]) . '/compras/' . $ata[3] . '/' . $ata[2] . '/atas/' . $ata[4];
+
+            $client = new \GuzzleHttp\Client();            
+            $res = $client->request('GET', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json'
+                                            ]
+                                        ]);
+            
+            $this->response = json_decode($res->getBody(), true);
+            $this->response['location'] = $url;
+            return ['response' => $this->response];               
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        }
     } 
+    
+    /**
+     * @method consultaContratosAtaPorUrl()
+     * @string url       // URL da Ata no PNCP
+     */
+    public function consultaContratosAtaPorUrl(string $url=NULL, int $pagina=1, int $tamanhoPagina=999)
+    {             
+        try
+        {
+            if(empty($url)){
+                throw new \Exception('URL da Ata não pode ser vazia.');
+            }
+            
+            $url .= '/contratos';
+                     
+            $client = new \GuzzleHttp\Client();            
+            $res = $client->request('GET', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json'
+                                            ],
+                                            'json' => [ 'pagina' => $pagina, 'tamanhoPagina' => $tamanhoPagina ]
+                                        ]);
+            
+            $this->response = json_decode($res->getBody(), true);
+            return ['response' => $this->response];               
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        }
+    }
+    
+    /**
+     * @method consultaDocumentosAtaPorUrl()
+     * @string url       // URL da Ata no PNCP
+     */
+    public function consultaDocumentosAtaPorUrl(string $url=NULL)
+    {             
+        try
+        {
+            if(empty($url)){
+                throw new \Exception('URL da Ata não pode ser vazia.');
+            }
+            
+            $url .= '/arquivos';
+                     
+            $client = new \GuzzleHttp\Client();            
+            $res = $client->request('GET', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json'
+                                            ]
+                                        ]);
+            
+            $this->response = json_decode($res->getBody(), true);
+            return ['response' => $this->response];               
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        }
+    } 
+    
+    /**
+     * @method consultaPartesEnvolvidasAtaPorUrl()
+     * @string url       // URL da Ata no PNCP
+     */
+    public function consultaPartesEnvolvidasAtaPorUrl(string $url=NULL, int $pagina=1, int $tamanhoPagina=999)
+    {             
+        try
+        {
+            if(empty($url)){
+                throw new \Exception('URL da Ata não pode ser vazia.');
+            }
+            
+            $url .= '/partesenvolvidas';
+            
+            $client = new \GuzzleHttp\Client();            
+            $res = $client->request('GET', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json'
+                                            ],
+                                            'json' => [ 'pagina' => $pagina, 'tamanhoPagina' => $tamanhoPagina ]
+                                        ]);
+            
+            $this->response = json_decode($res->getBody(), true);
+            return ['response' => $this->response];               
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        }
+    }
+    
+    /**
+     * @method consultaParteEnvolvidaAtaPorControle()
+     * @string controleata          // URL do arquivo
+     * @array parameters            // {
+     *                                    "tipoParteEnvolvidaId": 1,
+     *                                    "cnpj": "00394460000141",
+     *                                    "codigoUnidadeCompradora": "1"
+     *                                 }
+     */
+    public function consultaParteEnvolvidaAtaPorControle(string $controleata=NULL, array $parameters=NULL)
+    {             
+        try
+        {
+            if(empty($controleata)){
+                throw new \Exception('Número de Controle da ATA no PNCP não pode ser vazio.');
+            }            
+                        
+            $data = new \StdClass;
+            $schema = json_decode(file_get_contents(__DIR__.'/schemas/atas/novoParticipante.json'));
+            
+            if(!empty($parameters) && is_array($parameters))
+            {
+                foreach($parameters as $key => $value)
+                {
+                    $data->$key = $value;
+                }
+            }else{
+                throw new \Exception('Um array() de dados deve ser enviado. Consulte o schema.');
+            } 
+                        
+            // Validate
+            $validator = new \JsonSchema\Validator();
+            $validator->validate($data, $schema);
+                                               
+            if (!$validator->isValid()) {                
+                $msg = NULL;
+                foreach ($validator->getErrors() as $error) {
+                    $msg = $msg . $error['property']. ' - ' . $error['message']."<br>";
+                }
+                throw new \Exception($msg);
+            }            
+                                                
+            $ata = preg_split('/\W+/', $controleata, -1, PREG_SPLIT_NO_EMPTY);
+            
+            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $ata[0]) . '/compras/' . $ata[3] . '/' . $ata[2] . '/atas/' . $ata[4] . '/partesenvolvidas/'.$parameters['cnpj'].'/'.$parameters['codigoUnidadeCompradora'].'/'.$parameters['tipoParteEnvolvidaId'];
+            
+            
+            $client = new \GuzzleHttp\Client();            
+            $res = $client->request('GET', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json'
+                                            ]
+                                        ]);
+            
+            $this->response = json_decode($res->getBody(), true);
+            $this->response['location'] = $url;
+            return ['response' => $this->response];               
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        }
+    }
     
     /**
      * @method insereAta()
      * @string controle      // ID de controle da compra no PNCP
-     * $array parameters     // [
-     *                            "numeroAtaRegistroPreco": "1/2021",
-     *                            "anoAta": 2021,
-     *                            "dataAssinatura": "2021-07-21",
-     *                            "dataVigenciaInicio": "2021-07-21",
-     *                            "dataVigenciaFim": "2022-07-21"
+     * @array  parameters    // [
+     *                            "numeroAtaRegistroPreco" => "1/2021", 
+     *                            "anoAta" => 2021, 
+     *                            "dataAssinatura" => "2021-07-01", 
+     *                            "dataInicioVigencia" => "2021-07-01", 
+     *                            "dataFimVigencia" => "2021-07-01", 
+     *                            "possibilidadeAdesao" => TRUE,
+     *                            "partesEnvolvidas" => [
+     *                            {
+     *                                "tipoParteEnvolvidaId" => 1,
+     *                                "cnpj" => "10000000000003",
+     *                                "codigoUnidadeCompradora" => "1010"
+     *                            }
      *                          ]
      */
-    public function insereAta(string $controle=NULL, array $parameters=NULL)
+    public function insereAta(string $controle=NULL, array $parameters=NULL, string $documento=NULL, string $nome_documento=NULL, int $tipo_documento=11)
     {
         try
         {
@@ -126,6 +367,12 @@ class Atas
             if(empty($controle)){
                 throw new \Exception('ID Controle da compra não pode ser vazio.');
             }
+            
+            if (empty($documento)) {
+                throw new \Exception('Documento não pode ser vazio.');
+            }
+            
+            $tmpdoc = Pncp::getFile($documento);
                         
             $data = new \StdClass;     
             $schema = json_decode(file_get_contents(__DIR__.'/schemas/atas/novaAta.json'));
@@ -154,18 +401,34 @@ class Atas
             
             $partes = preg_split('/\W+/', $controle, -1, PREG_SPLIT_NO_EMPTY);
             
+            $tmpfile = tempnam(sys_get_temp_dir(), uniqid().'.json');
+            file_put_contents($tmpfile, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+            
             $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $partes[0]) . '/compras/' . $partes[3] . '/' . $partes[2] . '/atas';
              
             $client = new \GuzzleHttp\Client();            
             $result = $client->request('POST', $url, [
                                             'headers' => [
                                                 'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
+                                                'Titulo-Documento' => transliterator_transliterate('Any-Latin; Latin-ASCII', $nome_documento),
+                                                'Tipo-Documento-Id' => $tipo_documento,
                                                 'Authorization' => Pncp::getAccessToken()
                                             ],
-                                            'json' => $data
+                                            'multipart' => [
+                                                [
+                                                    'name' => 'ata',
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpfile), 'r'),
+                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($tmpfile))]
+                                                ],
+                                                [
+                                                    'name' => 'documento',
+                                                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen(urldecode($tmpdoc), 'r'),
+                                                    'headers'  => ['Content-Type' => mime_content_type(urldecode($tmpdoc))]
+                                                ]
+                                            ]
                                         ]);
             
+            $this->response = json_decode($result->getBody(), true);
             $this->response['location'] = $result->getHeader('location')[0];
             return ['response' => $this->response];          
             
@@ -257,6 +520,83 @@ class Atas
         		}
             }
         }  
+    } 
+    
+    /**
+     * @method insereParteEnvolvidaAta()
+     * @string controleata          // URL do arquivo
+     * @array parameters            // {
+     *                                    "tipoParteEnvolvidaId": 1,
+     *                                    "cnpj": "00394460000141",
+     *                                    "codigoUnidadeCompradora": "1"
+     *                                 }
+     */
+    public function insereParteEnvolvidaAta(string $controleata=NULL, array $parameters=NULL)
+    {
+        try
+        {    
+            if (empty(Pncp::getAccessToken())) {
+                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
+            } 
+            
+            if(empty($controleata)){
+                throw new \Exception('Número de Controle da ATA no PNCP não pode ser vazio.');
+            }            
+                        
+            $data = new \StdClass;
+            $schema = json_decode(file_get_contents(__DIR__.'/schemas/atas/novoParticipante.json'));
+            
+            if(!empty($parameters) && is_array($parameters))
+            {
+                foreach($parameters as $key => $value)
+                {
+                    $data->$key = $value;
+                }
+            }else{
+                throw new \Exception('Um array() de dados deve ser enviado. Consulte o schema.');
+            } 
+                        
+            // Validate
+            $validator = new \JsonSchema\Validator();
+            $validator->validate($data, $schema);
+                                               
+            if (!$validator->isValid()) {                
+                $msg = NULL;
+                foreach ($validator->getErrors() as $error) {
+                    $msg = $msg . $error['property']. ' - ' . $error['message']."<br>";
+                }
+                throw new \Exception($msg);
+            }            
+                                                
+            $ata = preg_split('/\W+/', $controleata, -1, PREG_SPLIT_NO_EMPTY);
+            
+            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/orgaos/' . preg_replace("/\D/", "", $ata[0]) . '/compras/' . $ata[3] . '/' . $ata[2] . '/atas/' . $ata[4] . '/partesenvolvidas';
+            
+            $client = new \GuzzleHttp\Client();            
+            $result = $client->request('POST', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Authorization' => Pncp::getAccessToken()
+                                            ],
+                                            'json' => [ $parameters ]
+                                        ]);
+            
+            $this->response['location'] = $result->getHeader('location')[0].'/'.$parameters['cnpj'].'/'.$parameters['codigoUnidadeCompradora'].'/'.$parameters['tipoParteEnvolvidaId'];
+            return ['response' => $this->response];           
+            
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        }  
     }   
         
     /**
@@ -310,6 +650,56 @@ class Atas
     }
     
     /**
+     * @method deletaParteEnvolvidaAtaPorUrl()
+     * @string url           // URL da ata no PNCP
+     * @string justificativa // Justificativa para a exclusão da compra
+     */
+    public function deletaParteEnvolvidaAtaPorUrl(string $url=NULL, string $justificativa=NULL)
+    {
+        try
+        {
+            if (empty(Pncp::getAccessToken())) {
+                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
+            }
+            
+            if(empty($url)){
+                throw new \Exception('URL da ATA não pode ser vazio.');
+            }
+            
+            if(empty($justificativa)){
+                throw new \Exception('Justificativa da exclusão não pode ser vazio.');
+            }
+            
+            $parameters = ['justificativa' => $justificativa];
+            
+            $client = new \GuzzleHttp\Client();            
+            $result = $client->request('DELETE', $url, [
+                                            'headers' => [
+                                                'Accept' => '*/*',
+                                                'Content-Type' => 'application/json',
+                                                'Authorization' => Pncp::getAccessToken()
+                                            ],
+                                            'json' => $parameters
+                                        ]);
+                                        
+            $this->response['location'] = $result->getHeaders();
+            return ['response' => $this->response];                         
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+    	    if ($e->hasResponse()) {
+        		$error = json_decode($e->getResponse()->getBody(), TRUE);
+        		if(is_array($error) && isset($error['message'])){
+                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
+        		}elseif(is_array($error) && isset($error['erros'])){
+        			throw new \Exception("{$error['erros'][0]['mensagem']}");
+        		}else{
+        			throw new \Exception($e->getMessage());
+        		}
+            }
+        } 
+    }
+    
+    /**
      * @method alteraAtaPorUrl()
      * @string url           // URL da ata no PNCP
      * @array  parameters    // [
@@ -318,6 +708,13 @@ class Atas
      *                            "dataAssinatura" => "2021-07-01", 
      *                            "dataInicioVigencia" => "2021-07-01", 
      *                            "dataFimVigencia" => "2021-07-01", 
+     *                            "possibilidadeAdesao" => TRUE,
+     *                            "partesEnvolvidas" => [
+     *                            {
+     *                                "tipoParteEnvolvidaId" => 1,
+     *                                "cnpj" => "10000000000003",
+     *                                "codigoUnidadeCompradora" => "1010"
+     *                            }
      *                            "cancelado" => true,                         // apenas se para Cancelamento da ATA
      *                            "dataCancelamento" => "2023-01-01T12:00:00", // apenas se cancelado = true
      *                            "justificativa" => "motivo/justificativa para a retificação dos atributos da ATA"

@@ -105,6 +105,15 @@
       "type": ["string", "null"],
       "minLength": 8,
       "maxLength": 14
+    },
+    "sequencialAta": {
+      "type": "integer"
+    },
+    "frutoAdesao": {
+      "type": "boolean"
+    },
+    "temRemanejamento": {
+      "type": "boolean"
     }
   },
   "required": [
@@ -127,6 +136,7 @@
     "valorGlobal",
     "dataAssinatura",
     "dataVigenciaInicio",
-    "dataVigenciaFim"
+    "dataVigenciaFim",
+    "frutoAdesao"
   ]
 }
