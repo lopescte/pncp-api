@@ -203,7 +203,7 @@ class Pncp
         }
         else
         {
-            if (!file_exists($url))
+            if (!file_exists(urldecode($url)))
             {
                 throw new \Exception('Arquivo local não encontrado.');
             }
