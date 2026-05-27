@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/lopescte/pncp-api/compare/v2.0.1...v2.0.2) (2026-05-27)
+
+
+### Bug Fixes
+
+* Corrige ausência de validação do retorno da API do PNCP ([2e820c5](https://github.com/lopescte/pncp-api/commit/2e820c50fa0f5aa1de7e3ee18bac585b852253f9))
+
 ## [2.0.1](https://github.com/lopescte/pncp-api/compare/v2.0.0...v2.0.1) (2026-05-23)
 
 
