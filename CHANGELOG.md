@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/lopescte/pncp-api/compare/v2.0.2...v2.0.3) (2026-05-27)
+
+
+### Bug Fixes
+
+* Corrige códigos de retorno em funções de inclusão e exclusão ([6b68f3a](https://github.com/lopescte/pncp-api/commit/6b68f3ad3a950d21e727cdba2c085935a57a617d))
+
 ## [2.0.2](https://github.com/lopescte/pncp-api/compare/v2.0.1...v2.0.2) (2026-05-27)
 
 
