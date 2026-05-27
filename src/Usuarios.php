@@ -44,8 +44,14 @@ class Usuarios
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -88,8 +94,14 @@ class Usuarios
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -166,8 +178,14 @@ class Usuarios
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -181,109 +199,5 @@ class Usuarios
         		}
             }
         }   
-    }
-    
-    /**
-     * @method insereEntesUsuarioPorId()
-     * @int id             //id do usuario
-     * @array cnpj         //[cnpj1, cnpj2, etc]
-     */
-    public function insereEntesUsuarioPorId(int $id=NULL, string $cnpj=NULL)
-    {
-        try
-        {  
-            if (empty(Pncp::getAccessToken())) {
-                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
-            } 
-            
-            if(empty($id)){
-                throw new \Exception('ID do usuário não pode ser vazio.');
-            }
-            
-            if(empty($cnpj)){
-                throw new \Exception('CNPJ do ente não pode ser vazio.');
-            }
-            
-            $parameters = ['entesAutorizados' => [preg_replace("/\D/", "", $cnpj)]];
-            
-            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/' . $id .'/orgaos';
-             
-            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
-            $result = $client->request('POST', $url, [
-                                            'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
-                                                'Authorization' => Pncp::getAccessToken()
-                                            ],
-                                            'json' => $parameters
-                                        ]);
-            
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
-        }
-        catch (\GuzzleHttp\Exception\RequestException $e) {
-    	    if ($e->hasResponse()) {
-        		$error = json_decode($e->getResponse()->getBody(), TRUE);
-        		if(is_array($error) && isset($error['message'])){
-                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-        		}elseif(is_array($error) && isset($error['erros'])){
-        			throw new \Exception("{$error['erros'][0]['mensagem']}");
-        		}else{
-        			throw new \Exception($e->getMessage());
-        		}
-            }
-        } 
-    }
-    
-    /**
-     * @method removeEntesUsuarioPorId()
-     * @int id             //id do usuario
-     * @array cnpj         //[cnpj1, cnpj2, etc]
-     */
-    public function removeEntesUsuarioPorId($id, $cnpj)
-    {
-        try
-        {
-            if (empty(Pncp::getAccessToken())) {
-                throw new \Exception("Esta operação requer autenticação. Inicialize a Conexão ao PNCP primeiro.");
-            } 
-            
-            if(empty($id)){
-                throw new \Exception('ID do usuário não pode ser vazio.');
-            }
-            
-            if(empty($cnpj)){
-                throw new \Exception('CNPJ do ente não pode ser vazio.');
-            }
-            
-            $parameters = ['entesAutorizados' => [preg_replace("/\D/", "", $cnpj)]];
-            
-            $url = Pncp::getBaseUrl() . '/' . Pncp::getVersion() . '/usuarios/' . $id .'/orgaos';
-             
-            $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
-            $result = $client->request('DELETE', $url, [
-                                            'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json',
-                                                'Authorization' => Pncp::getAccessToken()
-                                            ],
-                                            'json' => $parameters
-                                        ]);
-            
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
-        }
-        catch (\GuzzleHttp\Exception\RequestException $e) {
-    	    if ($e->hasResponse()) {
-        		$error = json_decode($e->getResponse()->getBody(), TRUE);
-        		if(is_array($error) && isset($error['message'])){
-                    throw new \Exception("{$error['error']} <br><br> {$error['message']}");
-        		}elseif(is_array($error) && isset($error['erros'])){
-        			throw new \Exception("{$error['erros'][0]['mensagem']}");
-        		}else{
-        			throw new \Exception($e->getMessage());
-        		}
-            }
-        } 
     }
 }

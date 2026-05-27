@@ -52,13 +52,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -90,13 +95,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -128,13 +138,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -166,13 +181,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -204,13 +224,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -280,13 +305,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -318,13 +348,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -356,13 +391,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -396,13 +436,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -435,13 +480,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -474,13 +524,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -513,13 +568,18 @@ class Dominios
              
             $res = $this->client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (RequestException $e) {
     	    if ($e->hasResponse()) {

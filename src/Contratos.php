@@ -33,13 +33,18 @@ class Contratos
             $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }              
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -74,13 +79,18 @@ class Contratos
             $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -171,10 +181,15 @@ class Contratos
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];           
-            
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                $this->response['location'] = $result->getHeader('location')[0];
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -244,9 +259,14 @@ class Contratos
                                             ]
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];           
-            
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -277,13 +297,18 @@ class Contratos
             $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $result = $client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];               
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -383,9 +408,14 @@ class Contratos
                                             'json' => $data
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];           
-            
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -453,8 +483,14 @@ class Contratos
                                             ]
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];           
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }           
             
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
@@ -527,9 +563,14 @@ class Contratos
                                             'json' => $parameters
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];           
-            
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                       
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -581,8 +622,14 @@ class Contratos
                                             ]
                                         ]);
             
-            $this->response = $result->getHeaders();
-            return ['response' => $this->response];            
+            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            {
+                $this->response = $res;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }            
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -631,8 +678,14 @@ class Contratos
                                             'json' => $parameters
                                         ]);
             
-            $this->response = $result->getHeaders();
-            return ['response' => $this->response];
+            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            {
+                $this->response = $res;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            } 
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -681,8 +734,14 @@ class Contratos
                                             'json' => $parameters
                                         ]);
             
-            $this->response = $result->getHeaders();
-            return ['response' => $this->response];
+            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            {
+                $this->response = $res;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            } 
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -731,8 +790,14 @@ class Contratos
                                             'json' => $parameters
                                         ]);
             
-            $this->response = $result->getHeaders();
-            return ['response' => $this->response];
+            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            {
+                $this->response = $res;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            } 
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {

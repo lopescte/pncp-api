@@ -35,14 +35,19 @@ class Compras
             $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            $this->response['uri'] = $url;
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                $this->response['uri'] = $url;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -75,14 +80,19 @@ class Compras
             $client = new \GuzzleHttp\Client(['timeout'=>15,'verify'=>true,'allow_redirects'=>true]);            
             $res = $client->request('GET', $url, [
                                             'headers' => [
-                                                'Accept' => '*/*',
-                                                'Content-Type' => 'application/json'
+                                                'Accept' => '*/*'
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            $this->response['uri'] = $url;
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                $this->response['uri'] = $url;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -133,8 +143,14 @@ class Compras
                                             'query' => $parameters
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -174,8 +190,14 @@ class Compras
                                             ]
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }               
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -216,42 +238,48 @@ class Compras
                                             ]
                                         ]);
             
-            $body = $res->getBody()->getContents();
-            $headers = $res->getHeaders();
-                        
-            $contentType = Pncp::getHeaderValue($headers, 'Content-Type') ?? 'application/octet-stream';
-            
-            $filename = uniqid();
-            $contentDisposition = Pncp::getHeaderValue($headers, 'Content-Disposition');
-            
-            if ($contentDisposition && preg_match('/filename="?([^"]+)"?/i', $contentDisposition, $matches)) {
-                $filename = $matches[1];
-            } else {
-                // Deduz a extensão com base no Content-Type
-                $ext = match ($contentType) {
-                    'application/pdf' => 'pdf',
-                    'application/zip' => 'zip',
-                    'application/rtf' => 'rtf',
-                    'application/msword' => 'doc',
-                    'application/vnd.ms-excel' => 'xls',
-                    'application/vnd.ms-powerpoint' => 'ppt',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
-                    'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
-                    'application/vnd.oasis.opendocument.text' => 'odt',
-                    'application/vnd.oasis.opendocument.spreadsheet' => 'ods',
-                    'image/jpeg' => 'jpg',
-                    'image/png' => 'png',
-                    'text/plain' => 'txt',
-                    default => 'bin',
-                };
-                $filename .= '.' . $ext;
+            if($res->getStatusCode() === 200 && $body = $res->getBody()->getContents())
+            {
+                $body = $res->getBody()->getContents();
+                $headers = $res->getHeaders();
+                            
+                $contentType = Pncp::getHeaderValue($headers, 'Content-Type') ?? 'application/octet-stream';
+                
+                $filename = uniqid();
+                $contentDisposition = Pncp::getHeaderValue($headers, 'Content-Disposition');
+                
+                if ($contentDisposition && preg_match('/filename="?([^"]+)"?/i', $contentDisposition, $matches)) {
+                    $filename = $matches[1];
+                } else {
+                    // Deduz a extensão com base no Content-Type
+                    $ext = match ($contentType) {
+                        'application/pdf' => 'pdf',
+                        'application/zip' => 'zip',
+                        'application/rtf' => 'rtf',
+                        'application/msword' => 'doc',
+                        'application/vnd.ms-excel' => 'xls',
+                        'application/vnd.ms-powerpoint' => 'ppt',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+                        'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+                        'application/vnd.oasis.opendocument.text' => 'odt',
+                        'application/vnd.oasis.opendocument.spreadsheet' => 'ods',
+                        'image/jpeg' => 'jpg',
+                        'image/png' => 'png',
+                        'text/plain' => 'txt',
+                        default => 'bin',
+                    };
+                    $filename .= '.' . $ext;
+                }
+                
+                $this->response['filename'] = $filename;
+                $this->response['content'] = $body;
+                
+                return ['response' => $this->response];
             }
-            
-            $this->response['filename'] = $filename;
-            $this->response['content'] = $body;
-            
-            return ['response' => $this->response];               
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -371,9 +399,14 @@ class Compras
                                             ]
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];           
-            
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -452,9 +485,14 @@ class Compras
                                             'json' => $parameters
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];          
-            
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -521,8 +559,14 @@ class Compras
                                             'json' => $parameters
                                         ]);
             
-            $this->response = json_decode($res->getBody(), true);
-            return ['response' => $this->response];               
+            if($res->getStatusCode() === 200 && $body = json_decode($res->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }            
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -605,9 +649,14 @@ class Compras
                                             'json' => $data
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];          
-            
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -690,9 +739,14 @@ class Compras
                                             'json' => $data
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];          
-            
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -758,9 +812,14 @@ class Compras
                                             ]
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];           
-            
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -845,9 +904,14 @@ class Compras
                                             'json' => $data
                                         ]);
             
-            $this->response['location'] = $result->getHeader('location')[0];
-            return ['response' => $this->response];          
-            
+            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            {
+                $this->response['location'] = $location;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }                     
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -935,9 +999,14 @@ class Compras
                                             'json' => $data
                                         ]);
             
-            $this->response = json_decode($result->getBody(), true);
-            return ['response' => $this->response];          
-            
+            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            {
+                $this->response = $body;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            } 
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -986,8 +1055,14 @@ class Compras
                                             'json' => $parameters
                                         ]);
             
-            $this->response = $result->getHeaders();
-            return ['response' => $this->response];            
+            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            {
+                $this->response = $res;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }           
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
@@ -1036,8 +1111,14 @@ class Compras
                                             'json' => $parameters
                                         ]);
             
-            $this->response = $result->getHeaders();
-            return ['response' => $this->response];            
+            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            {
+                $this->response = $res;
+                return ['response' => $this->response];
+            }
+            else{
+                throw new \Exception('Nenhum retorno da API do PNCP. Tente novamente mais tarde.');
+            }            
         }
         catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {

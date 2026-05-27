@@ -60,13 +60,17 @@ class Pncp
                                                 ]
                                             ]);
                 
-                self::setAccessToken($res->getHeader('authorization')[0]);
-                $_SESSION['pncp']['timestamp'] = time();
-                $_SESSION['pncp']['token'] = $res->getHeader('authorization')[0];
+                if($res->getStatusCode() === 200 && !empty($res->getHeader('authorization')[0]))
+                {
+                    self::setAccessToken($res->getHeader('authorization')[0]);
+                    $_SESSION['pncp']['timestamp'] = time();
+                    $_SESSION['pncp']['token'] = $res->getHeader('authorization')[0];
+                }else{
+                    throw new \Exception('Não foi possível autenticar na API do PNCP. Tente novamente mais tarde.');
+                }
                 
             }       
-        }
-        catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
     	    if ($e->hasResponse()) {
         		$error = json_decode($e->getResponse()->getBody(), TRUE);
         		if(is_array($error) && isset($error['message'])){
