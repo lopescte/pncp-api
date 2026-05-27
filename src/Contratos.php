@@ -181,7 +181,7 @@ class Contratos
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            if($result->getStatusCode() === 201 && $body = json_decode($result->getBody(), true))
             {
                 $this->response = $body;
                 $this->response['location'] = $result->getHeader('location')[0];
@@ -259,7 +259,7 @@ class Contratos
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];
@@ -408,7 +408,7 @@ class Contratos
                                             'json' => $data
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];
@@ -483,7 +483,7 @@ class Contratos
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];
@@ -563,7 +563,7 @@ class Contratos
                                             'json' => $parameters
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];

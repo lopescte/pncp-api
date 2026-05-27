@@ -399,7 +399,7 @@ class Compras
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            if($result->getStatusCode() === 201 && $body = json_decode($result->getBody(), true))
             {
                 $this->response = $body;
                 return ['response' => $this->response];
@@ -485,7 +485,7 @@ class Compras
                                             'json' => $parameters
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];
@@ -812,7 +812,7 @@ class Compras
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];
@@ -904,7 +904,7 @@ class Compras
                                             'json' => $data
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];

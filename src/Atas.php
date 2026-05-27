@@ -466,7 +466,7 @@ class Atas
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $body = json_decode($result->getBody(), true))
+            if($result->getStatusCode() === 201 && $body = json_decode($result->getBody(), true))
             {
                 $this->response = $body;
                 $this->response['location'] = $result->getHeader('location')[0];
@@ -547,7 +547,7 @@ class Atas
                                             ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location;
                 return ['response' => $this->response];
@@ -629,7 +629,7 @@ class Atas
                                             'json' => [ $parameters ]
                                         ]);
             
-            if($result->getStatusCode() === 200 && $location = $result->getHeader('location')[0])
+            if($result->getStatusCode() === 201 && $location = $result->getHeader('location')[0])
             {
                 $this->response['location'] = $location.'/'.$parameters['cnpj'].'/'.$parameters['codigoUnidadeCompradora'].'/'.$parameters['tipoParteEnvolvidaId'];
                 return ['response' => $this->response];
@@ -685,7 +685,7 @@ class Atas
                                             'json' => $parameters
                                         ]);
             
-            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            if($result->getStatusCode() === 204 && $res = $result->getHeaders())
             {
                 $this->response = $res;
                 return ['response' => $this->response];
@@ -741,7 +741,7 @@ class Atas
                                             'json' => $parameters
                                         ]);
                                         
-            if($result->getStatusCode() === 200 && $res = $result->getHeaders())
+            if($result->getStatusCode() === 204 && $res = $result->getHeaders())
             {
                 $this->response = $res;
                 return ['response' => $this->response];
