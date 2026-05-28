@@ -462,7 +462,7 @@ class Contratos
                 throw new \Exception('ID do tipo do Documento não pode ser vazio.');
             }            
             
-            $tmpdoc = Pncp::getFile($documento);
+            $tmpdoc = Pncp::getFile($arquivo);
             
             $url = $url . '/arquivos';
               
