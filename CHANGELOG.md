@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/lopescte/pncp-api/compare/v2.0.3...v2.0.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* Corrige bug no nome do parâmetro arquivo. ([f052363](https://github.com/lopescte/pncp-api/commit/f052363b75195d85fe8608ac457c1c478e014241))
+
 ## [2.0.3](https://github.com/lopescte/pncp-api/compare/v2.0.2...v2.0.3) (2026-05-27)
 
 
